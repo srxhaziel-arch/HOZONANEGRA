@@ -3,7 +3,6 @@ import {
   Download,
   FolderOpen,
   Loader2,
-  Menu,
   Moon,
   Plus,
   Search,
@@ -31,7 +30,6 @@ function toDbGuilds(guilds: Guild[]) {
 }
 
 function App() {
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<MapEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -342,31 +340,16 @@ function App() {
 
   return (
     <div className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'}`}>
-      {mobileSidebarOpen && (
-        <div className="sidebar-backdrop" onClick={() => setMobileSidebarOpen(false)} />
-      )}
-      <aside
-        className={`sidebar sidebar-open ${mobileSidebarOpen ? 'sidebar-mobile-open' : ''}`}
-      >
-        <div className="sidebar-brand">
-          <div className="brand-mark">
-            <img src="/image.png" alt="HO ZN" className="brand-logo" />
-          </div>
-          <div className="brand-text">
-            <strong>HO ZN</strong>
-            <span className="brand-subtitle">{RADAR_NAME}</span>
-          </div>
-        </div>
-        <div className="sidebar-body" />
-      </aside>
-
       <main className="main-content">
         <header className="topbar">
-          <button className="mobile-menu" onClick={() => setMobileSidebarOpen(true)} aria-label="Abrir menú">
-            <Menu size={20} />
-          </button>
-          <div className="breadcrumb">
-            <strong>{RADAR_NAME}</strong>
+          <div className="brand-header">
+            <div className="brand-mark">
+              <img src="/image.png" alt="HO ZN" className="brand-logo" />
+            </div>
+            <div className="brand-text">
+              <strong>HO ZN</strong>
+              <span className="brand-subtitle">{RADAR_NAME}</span>
+            </div>
           </div>
           <div className="top-actions">
             <button className="icon-button" onClick={() => setDarkMode(!darkMode)} title="Cambiar tema">
