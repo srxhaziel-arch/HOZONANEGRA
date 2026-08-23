@@ -353,6 +353,7 @@ function App() {
             <span className="brand-subtitle">{RADAR_NAME}</span>
           </div>
         </div>
+        <div className="sidebar-body" />
       </aside>
 
       <main className="main-content">
