@@ -281,7 +281,6 @@ th {
 
 tbody tr {
   transition: background .18s;
-  cursor: pointer;
 }
 
 tbody tr:hover {
@@ -294,6 +293,7 @@ tbody tr:last-child td {
 
 .row-selected {
   background: color-mix(in srgb, var(--gold) 12%, transparent);
+  cursor: pointer;
 }
 
 .row-selected:hover {
@@ -313,7 +313,7 @@ tbody tr:last-child td {
 }
 
 .map-cell {
-  width: 29%;
+  width: 28%;
 }
 
 .map-cell strong {
@@ -322,11 +322,18 @@ tbody tr:last-child td {
   font-weight: 700;
 }
 
-.map-cell span {
-  display: block;
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 8px;
+.actions-cell {
+  width: 100px;
+  text-align: right;
+  vertical-align: middle;
+}
+
+.action-edit-btn {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 11px;
+  border-radius: 6px;
 }
 
 .guild-list {
