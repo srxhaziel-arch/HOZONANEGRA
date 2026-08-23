@@ -4,6 +4,7 @@ import {
   FolderOpen,
   Loader2,
   Moon,
+  Pencil,
   Plus,
   Search,
   Sun,
