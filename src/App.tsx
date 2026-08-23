@@ -431,6 +431,7 @@ function App() {
                     {selectMode && <th className="checkbox-col"></th>}
                     <th>MAPA</th>
                     <th>GREMIOS</th>
+                    <th className="actions-header"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -438,7 +439,7 @@ function App() {
                     <tr
                       key={item.id}
                       className={selected.has(item.id) ? 'row-selected' : ''}
-                      onClick={() => (selectMode ? toggleSelection(item.id) : beginEdit(item))}
+                      onClick={selectMode ? () => toggleSelection(item.id) : undefined}
                     >
                       {selectMode && (
                         <td className="checkbox-col" onClick={(e) => e.stopPropagation()}>
@@ -451,7 +452,6 @@ function App() {
                       )}
                       <td className="map-cell">
                         <strong>{item.map}</strong>
-                        <span>{item.lastEdited ? `Editado ${item.lastEdited}` : 'Sin editar'}</span>
                       </td>
                       <td>
                         <div className="guild-list">
@@ -463,11 +463,20 @@ function App() {
                           ))}
                         </div>
                       </td>
+                      <td className="actions-cell" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          className="secondary-button action-edit-btn"
+                          onClick={() => beginEdit(item)}
+                          title="Editar mapa"
+                        >
+                          <Pencil size={13} /> Editar
+                        </button>
+                      </td>
                     </tr>
                   ))}
                   {!filteredData.length && (
                     <tr>
-                      <td colSpan={selectMode ? 3 : 2} className="empty-state">
+                      <td colSpan={selectMode ? 4 : 3} className="empty-state">
                         <strong>{search ? 'No se encontraron resultados' : 'Todavía no hay mapas'}</strong>
                         <span>
                           {search
