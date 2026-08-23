@@ -275,19 +275,23 @@ function App() {
       let skippedCount = 0;
 
       for (const item of parsed) {
+        if (!item || typeof item !== 'object') {
+          skippedCount++;
+          continue;
+        }
+
+        const raw = item as { map?: unknown; guilds?: unknown; lastEdited?: unknown };
         if (
-          !item ||
-          typeof item !== 'object' ||
-          typeof (item as Record<string, unknown>).map !== 'string' ||
-          !(item as Record<string, unknown>).map.trim() ||
-          !Array.isArray((item as Record<string, unknown>).guilds)
+          typeof raw.map !== 'string' ||
+          !raw.map.trim() ||
+          !Array.isArray(raw.guilds)
         ) {
           skippedCount++;
           continue;
         }
 
-        const mapName = (item as { map: string }).map.trim();
-        const guildList = (item as { guilds: Guild[] }).guilds;
+        const mapName = raw.map.trim();
+        const guildList = raw.guilds as Guild[];
         const validGuilds = guildList.filter(
           (g) => g && typeof g.name === 'string' && g.name.trim(),
         );
