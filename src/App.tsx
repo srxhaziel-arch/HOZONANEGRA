@@ -87,6 +87,13 @@ function App() {
       }
     }
 
+    grouped.sort((a, b) => a.map.localeCompare(b.map, 'es', { sensitivity: 'base' }));
+
+    // Sort guilds alphabetically for each map
+    grouped.forEach((mapEntry) => {
+      mapEntry.guilds.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
+    });
+
     setData(grouped);
   }, []);
 
