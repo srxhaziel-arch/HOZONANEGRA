@@ -89,7 +89,6 @@ function App() {
 
     grouped.sort((a, b) => a.map.localeCompare(b.map, 'es', { sensitivity: 'base' }));
 
-    // Sort guilds alphabetically for each map
     grouped.forEach((mapEntry) => {
       mapEntry.guilds.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
     });
@@ -165,12 +164,22 @@ function App() {
         radar: RADAR_KEY,
       }));
 
-      const { error } = await supabase.rpc('upsert_mapa_hideouts', {
-        p_old_map: editingMap,
-        p_radar: RADAR_KEY,
-        p_rows: rowsToInsert,
-      });
-      if (error) throw error;
+      // Limpia entradas anteriores si estamos editando o sobrescribiendo el mapa
+      const targetMapToDelete = editingMap || name;
+      const { error: delError } = await supabase
+        .from('mapas_hideouts')
+        .delete()
+        .eq('map', targetMapToDelete)
+        .eq('radar', RADAR_KEY);
+
+      if (delError) throw delError;
+
+      // Inserción directa en la tabla de Supabase (evita la función RPC defectuosa)
+      const { error: insError } = await supabase
+        .from('mapas_hideouts')
+        .insert(rowsToInsert);
+
+      if (insError) throw insError;
 
       flash(editingMap ? 'Mapa actualizado' : 'Mapa agregado');
       resetForm();
@@ -237,7 +246,7 @@ function App() {
       lastEdited,
     }));
     const blob = new Blob([JSON.stringify(exportable, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+    const url = URL.URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = `radar_albion_${new Date().toISOString().slice(0, 10)}.json`;
