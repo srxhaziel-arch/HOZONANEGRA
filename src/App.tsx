@@ -154,14 +154,6 @@ function App() {
     const lastEdited = new Date().toLocaleString('es-ES');
 
     try {
-      if (editingMap) {
-        await supabase
-          .from('mapas_hideouts')
-          .delete()
-          .eq('map', editingMap)
-          .eq('radar', RADAR_KEY);
-      }
-
       const rowsToInsert = cleanGuilds.map((g) => ({
         map: name,
         guild_name: g.name,
@@ -173,7 +165,11 @@ function App() {
         radar: RADAR_KEY,
       }));
 
-      const { error } = await supabase.from('mapas_hideouts').insert(rowsToInsert);
+      const { error } = await supabase.rpc('upsert_mapa_hideouts', {
+        p_old_map: editingMap,
+        p_radar: RADAR_KEY,
+        p_rows: rowsToInsert,
+      });
       if (error) throw error;
 
       flash(editingMap ? 'Mapa actualizado' : 'Mapa agregado');
